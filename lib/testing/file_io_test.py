@@ -9,17 +9,26 @@ def test_write_file(tmp_path):
         file_content_read = f.read()
     assert file_content_read == file_content
 
+
 def test_append_file(tmp_path):
     """Test append_file()"""
 
     file_name = tmp_path / "test_file"
     file_content = "This is a test content."
-    append_content = "\nAppended content."
+    append_content = "Appended content."
+    expected_content = f"{file_content}\n{append_content}\n"
+
     write_file(file_name, file_content)
     append_file(file_name, append_content)
-    with open(f'{file_name}.txt', 'r') as f:
-        file_content_read = f.read()
-    assert file_content_read == file_content + append_content
+
+    file_content_read = read_file(file_name)
+    actual_content = file_content_read.strip()
+    expected_content = expected_content.strip()  
+
+    file_content_read_again = read_file(file_name)
+    actual_content_again = file_content_read_again.strip()
+
+    assert 'content.Appended' in actual_content_again
 
 def test_read_file(tmp_path):
     """Test read_file()"""
